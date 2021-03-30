@@ -1,8 +1,12 @@
+%define __debug_install_post \
+%{_rpmconfigdir}/find-debuginfo.sh %{?_find_debuginfo_opts} "%{_builddir}/%{?buildsubdir}"\
+%{nil}
+
 %global shortname srtp
 
 Name:		libsrtp
-Version:	1.6.0
-Release:    %{rpm_release}.%{disttype}%{distnum}
+Version:	2.3.0
+Release:        1%{?dist}
 Summary:	An implementation of the Secure Real-time Transport Protocol (SRTP)
 License:	BSD
 URL:		https://github.com/cisco/libsrtp
@@ -50,14 +54,14 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files
 %license LICENSE
-%doc CHANGES README TODO VERSION doc/*.txt doc/*.pdf
+%doc doc/*.txt 
 %{_libdir}/*.so.*
 %{_libdir}/*.so
 %{_libdir}/*.a
 
 %files devel
-%{_includedir}/%{shortname}/
-%{_libdir}/pkgconfig/libsrtp.pc
+%{_includedir}/%{shortname}2/
+%{_libdir}/pkgconfig/libsrtp2.pc
 
 %changelog
 * Thu Apr 16 2020 Francisco Correia <fcorreia@users.noreply.github.com> - 1.6.0
@@ -65,5 +69,3 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 * Thu Apr 16 2020 Francisco Correia <fcorreia@users.noreply.github.com> - 1.5.4
 - Initial Spec file from Fedora project: https://src.fedoraproject.org/rpms/libsrtp.git
-
-

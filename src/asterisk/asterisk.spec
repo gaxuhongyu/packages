@@ -1,3 +1,6 @@
+%define __debug_install_post \
+%{_rpmconfigdir}/find-debuginfo.sh %{?_find_debuginfo_opts} "%{_builddir}/%{?buildsubdir}"\
+%{nil}
 
 ##
 %define _user       asterisk
@@ -60,8 +63,8 @@
 
 Summary:	Asterisk, The Open Source PBX
 Name:		asterisk
-Version:    18.1.0
-Release:    %{?_rc:rc%{_rc}.}%{rpm_release}.%{disttype}%{distnum}
+Version:    18.3.0
+Release:    1%{?dist}
 License:	GPL v2
 Group:		Applications/System
 URL:		http://www.asterisk.org/
@@ -728,7 +731,6 @@ echo "**************************************************************************
 %make_build menuselect-tree NOISY_BUILD=1
 %{__perl} -n -i -e 'print unless /openr2/i' menuselect-tree
 
-
 # Build with plain voicemail and directory
 echo "### Building with plain voicemail and directory"
 %make_build %{makeargs}
@@ -886,6 +888,8 @@ rm -f %{buildroot}%{_sysconfdir}/asterisk/phone.conf
 %if ! 0%{xmpp}
 rm -f %{buildroot}%{_sysconfdir}/asterisk/xmpp.conf
 rm -f %{buildroot}%{_sysconfdir}/asterisk/motif.conf
+rm -f %{buildroot}%{_libdir}/asterisk/modules/res_xmpp.so
+rm -f %{buildroot}%{_libdir}/asterisk/modules/chan_motif.so
 %endif
 
 %if ! 0%{ooh323}
@@ -1043,6 +1047,7 @@ fi
 %{_libdir}/asterisk/modules/codec_resample.so
 %{_libdir}/asterisk/modules/codec_speex.so
 %{_libdir}/asterisk/modules/codec_ulaw.so
+%{_libdir}/asterisk/modules/codec_codec2.so
 %{_libdir}/asterisk/modules/format_g719.so
 %{_libdir}/asterisk/modules/format_g723.so
 %{_libdir}/asterisk/modules/format_g726.so
@@ -1190,7 +1195,6 @@ fi
 %{_libdir}/asterisk/modules/res_pjsip_stir_shaken.so
 %{_libdir}/asterisk/modules/res_stir_shaken.so
 %{_libdir}/asterisk/modules/res_prometheus.so
-%{_libdir}/asterisk/modules/res_resolver_unbound.so
 %{_libdir}/asterisk/modules/format_mp3.so
 
 %{_sbindir}/astcanary
@@ -1334,6 +1338,7 @@ fi
 %{_libdir}/asterisk/modules/res_calendar_caldav.so
 %{_libdir}/asterisk/modules/res_calendar_ews.so
 %{_libdir}/asterisk/modules/res_calendar_icalendar.so
+%{_libdir}/asterisk/modules/res_calendar_exchange.so
 
 %if 0%{?corosync}
 %files corosync
